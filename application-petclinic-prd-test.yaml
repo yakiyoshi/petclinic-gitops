@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: petclinic-prd-test
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: petclinic-prd-test
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values-prd-test.yaml
+    path: .
+    repoURL: https://github.com/yakiyoshi/petclinic.git
+    targetRevision: prd-test
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

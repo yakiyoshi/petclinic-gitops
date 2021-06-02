@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: petclinic-helm-dev
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: petclinic-helm-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+    path: spring-petclinic
+    repoURL: https://github.com/yakiyoshi/spring-petclinic-helm.git
+    targetRevision: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

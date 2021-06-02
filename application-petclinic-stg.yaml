@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: petclinic-stg
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: petclinic-stg
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values-stg.yaml
+    path: .
+    repoURL: https://github.com/yakiyoshi/petclinic.git
+    targetRevision: stg
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
